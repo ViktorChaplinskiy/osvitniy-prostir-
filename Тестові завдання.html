@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест: Теплові явища</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/3f/Heat_convection.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #fff;
+            text-shadow: 1px 1px 2px #000;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        .question p {
+            font-weight: bold;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .correct {
+            color: lightgreen;
+        }
+        .incorrect {
+            color: red;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: yellow;
+        }
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Тест: Теплові явища</h1>
+        <form id="quizForm">
+            <!-- Вопросы -->
+            <div class="question">
+                <p>1. Напишіть, як називається прилад для вимірювання температури?</p>
+                <input type="text" name="q1">
+                <div class="feedback" id="feedback-q1"></div>
+            </div>
+            <div class="question">
+                <p>2. Яка температура є точкою замерзання води?</p>
+                <label><input type="radio" name="q2" value="0°C"> 0°C</label><br>
+                <label><input type="radio" name="q2" value="100°C"> 100°C</label><br>
+                <label><input type="radio" name="q2" value="-100°C"> -100°C</label>
+                <div class="feedback" id="feedback-q2"></div>
+            </div>
+            <div class="question">
+                <p>3. Виберіть явища, пов’язані з тепловим розширенням:</p>
+                <label><input type="checkbox" name="q3" value="Розширення мосту влітку"> Розширення мосту влітку</label><br>
+                <label><input type="checkbox" name="q3" value="Розкол скла взимку"> Розкол скла взимку</label><br>
+                <label><input type="checkbox" name="q3" value="Кипіння води"> Кипіння води</label>
+                <div class="feedback" id="feedback-q3"></div>
+            </div>
+            <div class="question">
+                <p>4. Виберіть, у якому агрегатному стані вода має найбільшу густину:</p>
+                <select name="q4">
+                    <option value="">Виберіть...</option>
+                    <option value="Рідина">Рідина</option>
+                    <option value="Газ">Газ</option>
+                    <option value="Лід">Лід</option>
+                </select>
+                <div class="feedback" id="feedback-q4"></div>
+            </div>
+            <div class="question">
+                <p>5. Вкажіть кількість днів у високосному році:</p>
+                <input type="number" name="q5">
+                <div class="feedback" id="feedback-q5"></div>
+            </div>
+            <div class="question">
+                <p>6. Укажіть дату закінчення Другої світової війни:</p>
+                <input type="date" name="q6">
+                <div class="feedback" id="feedback-q6"></div>
+            </div>
+            <div class="question">
+                <p>7. Вкажіть, як змінюється швидкість молекул при нагріванні:</p>
+                <label><input type="radio" name="q7" value="Збільшується"> Збільшується</label><br>
+                <label><input type="radio" name="q7" value="Зменшується"> Зменшується</label><br>
+                <label><input type="radio" name="q7" value="Не змінюється"> Не змінюється</label>
+                <div class="feedback" id="feedback-q7"></div>
+            </div>
+            <div class="question">
+                <p>8. Яка температура кипіння води за нормального тиску?</p>
+                <label><input type="radio" name="q8" value="100°C"> 100°C</label><br>
+                <label><input type="radio" name="q8" value="50°C"> 50°C</label><br>
+                <label><input type="radio" name="q8" value="0°C"> 0°C</label>
+                <div class="feedback" id="feedback-q8"></div>
+            </div>
+            <div class="question">
+                <p>9. У яких одиницях вимірюється температура в системі SI?</p>
+                <label><input type="radio" name="q9" value="Кельвіни"> Кельвіни</label><br>
+                <label><input type="radio" name="q9" value="Градуси Цельсія"> Градуси Цельсія</label><br>
+                <label><input type="radio" name="q9" value="Градуси Фаренгейта"> Градуси Фаренгейта</label>
+                <div class="feedback" id="feedback-q9"></div>
+            </div>
+            <div class="question">
+                <p>10. Напишіть, як називається явище збільшення розмірів тіла при нагріванні?</p>
+                <input type="text" name="q10">
+                <div class="feedback" id="feedback-q10"></div>
+            </div>
+            <button type="button" onclick="checkAnswers()">Перевірити відповіді</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function checkAnswers() {
+            const correctAnswers = {
+                q1: "Термометр",
+                q2: "0°C",
+                q3: ["Розширення мосту влітку", "Розкол скла взимку"],
+                q4: "Рідина",
+                q5: "366",
+                q6: "1945-09-02",
+                q7: "Збільшується",
+                q8: "100°C",
+                q9: "Кельвіни",
+                q10: "Теплове розширення"
+            };
+
+            let score = 0;
+            let totalQuestions = Object.keys(correctAnswers).length;
+
+            for (let question in correctAnswers) {
+                const feedbackDiv = document.getElementById(`feedback-${question}`);
+                const userAnswer = document.getElementsByName(question);
+
+                if (question === "q3") {
+                    const selectedOptions = Array.from(userAnswer)
+                        .filter(input => input.checked)
+                        .map(input => input.value);
+                    if (JSON.stringify(selectedOptions.sort()) === JSON.stringify(correctAnswers[question].sort())) {
+                        feedbackDiv.textContent = "Правильно!";
+                        feedbackDiv.className = "feedback correct";
+                        score++;
+                    } else {
+                        feedbackDiv.textContent = `Неправильно. Правильна відповідь: ${correctAnswers[question].join(", ")}.`;
+                        feedbackDiv.className = "feedback incorrect";
+                    }
+                } else {
+                    const selected = userAnswer[0].type === "radio" || userAnswer[0].type === "text" || userAnswer[0].type === "number" || userAnswer[0].type === "date" || userAnswer[0].tagName === "SELECT" 
+                        ? userAnswer[0].value 
+                        : "";
+
+                    if (selected === correctAnswers[question]) {
+                        feedbackDiv.textContent = "Правильно!";
+                        feedbackDiv.className = "feedback correct";
+                        score++;
+                    } else {
+                        feedbackDiv.textContent = `Неправильно. Правильна відповідь: ${correctAnswers[question]}.`;
+                        feedbackDiv.className = "feedback incorrect";
+                    }
+                }
+            }
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = `Ви набрали ${score} з ${totalQuestions} балів.`;
+        }
+    </script>
+</body>
+</html>
