@@ -1,70 +1,122 @@
 <!DOCTYPE html>
-<html>
-  <style>
-a:link {
-  color: white;
-  background-color: transparent;
-  text-decoration: none;
-}
-a:visited {
-  color: white;
-  background-color: transparent;
-  text-decoration: none;
-}
-a:hover {
-  color: red;
-  background-color: transparent;
-  text-decoration: underline;
-}
-a:active {
-  color: yellow;
-  background-color: transparent;
-  text-decoration: underline;
-}
-body {
-  background-image: url('fizika.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 100% 100%;
-}
-{
-  font-family: "Times New Roman", Times, serif;
-}
-div.second {
-  background: rgba(0, 128, 0, 0.3);
-}
-p.round2 {
-  border: 2px solid green;
-  border-radius: 8px;
-}
-div {
-  border: 2px solid green;
-  padding: 20px;
-  width: 1360px;
-  height: 380px;
-  text-align: justify;
-}
-</style>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Інтерактивна сторінка для уроку фізики">
+    <title>Урок фізики</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+        }
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: #1e3c72;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+            color: #f39c12;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            background: #f39c12;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        nav a:hover {
+            text-shadow: 0 0 10px #fff;
+        }
+        main {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        main h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #f39c12;
+        }
+        main p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 1rem auto;
+            line-height: 1.6;
+        }
+        .physics-facts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .fact {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .fact:hover {
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #1e3c72;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.2);
+        }
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
 <body>
-<h1 style="color:white;text-align:center ;font-size: 350%" > Доброго дня</h1>
-  <hr>
-<p style="color:white;text-align:center; font-size: 200%"  > Вітаю в своєму освітньому просторі</p>
-  <hr>
-  <p style="color:white;text-align:center; font-size: 200%"> Сьогодні ми завітаємо на урок фізики та вивчимо тему:Теплові явища</p>
-  <hr>
-  <p style="color:white" >Перейдіть на Головну сторінку</p>
-  <nav>
-  <a href="Головна.html">Головна сторінка</a> 
-</nav>
+    <header>
+        <h1>Вивчаємо фізику разом!</h1>
+        <p>Захоплюючий світ законів природи</p>
+    </header>
+    <nav>
+        <a href="Головна">Наш урок</a>
+        <a href="#facts">Цікаві факти</a>
+        <a href="#contact">Контакти</a>
+    </nav>
+    <main>
+        <h2>Вітаємо на уроці фізики!</h2>
+        <p>Тема уроку:Теплові явища. Температура. Тепловий стан тіл. Залежність розмірів фізичних тіл від температури</p>
+        <section id="facts" class="physics-facts">
+            <div class="fact">
+                <h3>Факт 1</h3>
+                <p>Найхолодніше місце у Всесвіті — це не відкритий космос, а лабораторія на Землі. Досягнуті температури, що лише на кількох нанокельвінів вищі за абсолютний нуль (-273,15 °C), під час експериментів із конденсатом Бозе-Ейнштейна.</p>
+            </div>
+            <div class="fact">
+                <h3>Факт 2</h3>
+                <p>Ейфелева вежа влітку стає на 15 см вище через теплове розширення металу. Це чудовий приклад впливу теплових явищ на конструкцію.</p>
+            </div>
+            <div class="fact">
+                <h3>Факт 3</h3>
+                <p>Алмаз є найкращим теплопроводом серед усіх природних матеріалів. Він здатний передавати тепло в 5 разів швидше, ніж мідь.</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Чаплінський Віктор © 2024 Урок фізики. Всі права захищені.</p>
+    </footer>
 </body>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <footer style="color:white">
-  <p>Автор: Віктор Чаплінський</p>
-  <p>Контактна інформація: <a href="caplinskijviktor96@gmail.com">
-  caplinskijviktor96@gmail.com</a><a href="https://t.me/caplinskijviktor96">
-  Telegram</a></p>
-</footer>
 </html>
