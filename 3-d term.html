@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  
+  <title>3D-Термометр </title>
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef2f3;
+      overflow: hidden;
+    }
+    .slider-container {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    input[type="range"] {
+      width: 300px;
+    }
+    .temperature-label {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <a-scene>
+    <!-- Камера для перегляду -->
+    <a-camera position="0 1.6 5"></a-camera>
+
+    <!-- Небо -->
+    <a-sky color="#cce7ff"></a-sky>
+
+    <!-- Світло -->
+    <a-light type="ambient" intensity="0.6"></a-light>
+    <a-light type="directional" position="0 5 5" intensity="1"></a-light>
+
+    <!-- Термометр -->
+    <a-entity position="0 1 -3" id="thermometer">
+      <!-- Основа термометра -->
+      <a-cylinder height="1" radius="0.3" color="#b0b0b0" position="0 0 0" material="opacity: 0.8; transparent: true;"></a-cylinder>
+      
+      <!-- Ртуть (напівпрозорий для ефекту рідини) -->
+      <a-cylinder id="mercury3D" height="0.5" radius="0.15" color="#ff3333" position="0 0.25 0"
+                  material="opacity: 0.8; transparent: true;"></a-cylinder>
+
+      <!-- Верхній ковпачок -->
+      <a-sphere  radius="0.2" color="#b0b0b0" position="0 3 0"></a-sphere>
+    </a-entity>
+
+    <!-- Шкала термометра (орієнтація шкали від низької до високої температури) -->
+    <a-line position="0 1 -2" rotation="0 0 0" length="3" color="#000" line-width="0.05"></a-line>
+    
+    <!-- Позначки температури, які правильно орієнтовані від низької до високої -->
+    <a-text value="100°C" position="0.5 4.7 0" align="center" color="#000"></a-text>
+    <a-text value="50°C" position="0.5 4 0" align="center" color="#000"></a-text>
+    <a-text value="0°C" position="0.5 3.1 0" align="center" color="#000"></a-text>
+    <a-text value="-50°C" position="0.5 2.3 0" align="center" color="#000"></a-text>
+    <a-text value="-100°C" position="0.5 1.5 0" align="center" color="#000"></a-text>
+
+    <!-- Текст для фазового стану -->
+    <a-text id="phaseChange3D" value="Стан: Лід ❄️" position="2 1.5 0" align="center" color="#333" scale="1 1 1"></a-text>
+
+    <!-- Вспливаючий текст -->
+	<a-text id="popupTemp" value="50"  position="3 1.5 0" align="center" color="#d4e612"  visible= "true"></a-text>
+    <a-text id="popupTemp" value="50"  position="2 1.5 0" align="center" color="#d4e612"  visible= "false"></a-text>
+  </a-scene>
+
+  <!-- Слайдер для регулювання температури -->
+  <div class="slider-container">
+    <div class="temperature-label">Температура: <span id="temperatureValue">50</span>°C</div>
+    <input type="range" id="temperatureSlider" min="-100" max="100" value="50">
+  </div>
+
+  <script>
+    const slider = document.getElementById('temperatureSlider');
+    const temperatureValue = document.getElementById('temperatureValue');
+    const mercury3D = document.querySelector('#mercury3D');
+    const phaseChange3D = document.getElementById('phaseChange3D');
+    const popupTemp = document.getElementById('popupTemp');
+    const thermometer = document.getElementById('thermometer');
+
+    // Зміна температури через слайдер
+    slider.addEventListener('input', () => {
+      const temp = parseInt(slider.value);
+      temperatureValue.textContent = temp;
+
+      // Визначення висоти ртуті
+      const mercuryHeight = (temp + 100) / 100 * 2.5 + 0.5; // Мінімальна висота 0.5
+      const mercuryPosition = mercuryHeight / 2;
+
+      // Оновлення ртуті без анімацій (прямо через зміну атрибутів)
+      mercury3D.setAttribute('height', mercuryHeight);
+      mercury3D.setAttribute('position', `0 ${mercuryPosition} 0`);
+
+      // Оновлення фазового стану
+      if (temp <= 0) {
+        phaseChange3D.setAttribute("value", 'Стан: Лід ❄️');
+        phaseChange3D.setAttribute('color', '#007bff');
+      } else if (temp > 0 && temp < 100) {
+        phaseChange3D.setAttribute('value', 'Стан: Рідина 🌊');
+        phaseChange3D.setAttribute('color', '#007700');
+      } else {
+        phaseChange3D.setAttribute('value', 'Стан: Газ 💨');
+        phaseChange3D.setAttribute('color', '#ff4500');
+      }
+    })
+
+    // Взаємодія з термометром у 3D
+  thermometer.addEventListener('click', () => {
+  const temp = slider.value;  // Отримуємо температуру з слайдера
+  popupTemp.setAttribute('value', `Температура: ${temp}°C`);  // Оновлюємо текст значення температури
+  popupTemp.setAttribute('visible', true);  // Робимо текст видимим
+
+  // Приховуємо текст через 2 секунди
+  setTimeout(() => {
+    popupTemp.setAttribute('visible', false);  // Приховуємо текст після 2 секунд
+  }, 2000);
+  });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

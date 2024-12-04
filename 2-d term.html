@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Інтерактивний термометр</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background: #f3f4f6;
+    }
+    .container {
+      padding: 20px;
+    }
+    #thermometer {
+      width: 50px;
+      height: 300px;
+      background: linear-gradient(to top, red, white);
+      border: 2px solid #000;
+      border-radius: 25px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .mercury {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      background: red;
+      border-radius: 25px;
+    }
+    #temperatureDisplay {
+      font-size: 24px;
+      margin: 20px 0;
+    }
+    .slider-container {
+      margin-top: 20px;
+    }
+    input[type="range"] {
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌡️ Інтерактивний Термометр</h1>
+    <div id="thermometer">
+      <div class="mercury" id="mercury" style="height: 50%;"></div>
+    </div>
+    <div id="temperatureDisplay">Температура: <span id="temperatureValue">50</span>°C</div>
+    <div class="slider-container">
+      <input type="range" id="temperatureSlider" min="-100" max="100" value="50">
+    </div>
+    <div id="phaseChange" style="margin-top: 20px; font-size: 18px; color: #333;">
+      Стан: Рідина 🌊
+    </div>
+  </div>
+
+  <script>
+    const mercury = document.getElementById('mercury');
+    const temperatureValue = document.getElementById('temperatureValue');
+    const phaseChange = document.getElementById('phaseChange');
+    const slider = document.getElementById('temperatureSlider');
+
+    slider.addEventListener('input', () => {
+      const temp = parseInt(slider.value);
+      temperatureValue.textContent = temp;
+      
+      // Зміна висоти "ртуті" у термометрі
+      const mercuryHeight = (temp + 100) / 2; // Нормалізація для від -100 до 100
+      mercury.style.height = mercuryHeight + '%';
+
+      // Визначення фазового стану
+      if (temp <= 0) {
+        phaseChange.textContent = 'Стан: Лід ❄️';
+        phaseChange.style.color = '#00f';
+      } else if (temp > 0 && temp < 100) {
+        phaseChange.textContent = 'Стан: Рідина 🌊';
+        phaseChange.style.color = '#007700';
+      } else {
+        phaseChange.textContent = 'Стан: Газ 💨';
+        phaseChange.style.color = '#ff4500';
+      }
+    });
+  </script>
+</body>
+</html>
