@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Теплові явища - A-Frame</title>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+</head>
+<body>
+  <a-scene>
+    <!-- Плоска підлога -->
+    <a-plane position="0 -2 -5" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+    
+    <!-- Каструля з водою -->
+    <a-entity position="0 -1 -3">
+      <!-- Каструля -->
+      <a-cylinder height="0.2" radius="0.5" color="#444"></a-cylinder>
+      <!-- Вода -->
+      <a-sphere id="water" position="0 0.2 0" radius="0.45" color="#3498db"></a-sphere>
+    </a-entity>
+    
+    <!-- Нагрівач -->
+    <a-box id="heater" position="0 -1.5 -3" depth="0.3" width="1" height="0.3" color="#FF5733"></a-box>
+
+    <!-- Кнопки управління -->
+    <a-entity position="-1 0 -3">
+      <!-- Кнопка підвищення температури -->
+      <a-box id="increaseTemp" position="0 0 0" width="0.8" height="0.5" depth="0.2" color="#00FF00">
+        <a-text value="+" align="center" position="0 0 0.1" color="#000000"></a-text>
+      </a-box>
+      <!-- Кнопка зниження температури -->
+      <a-box id="decreaseTemp" position="0 -0.5 0" width="0.8" height="0.5" depth="0.2" color="#FF0000">
+        <a-text value="-" align="center" position="0 0 0.1" color="#000000"></a-text>
+      </a-box>
+    </a-entity>
+
+    <!-- Шкала температури -->
+    <a-entity position="1 0 -3">
+      <a-box position="0 0.1 0" width="0.3" height="3" depth="0.2" color="#CCCCCC"></a-box>
+      <a-box id="temperatureIndicator" position="0 2 0.1" width="0.3" height="0.4" depth="0.2" color="#FF0000"></a-box>
+      <!-- Значення на шкалі -->
+      <a-text value="100°C" position="0 1.5 0.3" align="center" width="2" color="#000000"></a-text>
+      <a-text value="50°C" position="0 0 0.3" align="center" width="2" color="#000000"></a-text>
+      <a-text value="0°C" position="0 -1.5 0.3" align="center" width="2" color="#000000"></a-text>
+    </a-entity>
+
+
+    <!-- Камера -->
+    <a-camera position="0 0 0">
+      <a-cursor></a-cursor>
+    </a-camera>
+  </a-scene>
+
+  <script>
+    let heatLevel = 0; // Температура в градусах
+    const maxHeatLevel = 100; // Максимальна температура
+    const minHeatLevel = 0; // Мінімальна температура
+    const water = document.querySelector('#water');
+    const increaseTemp = document.querySelector('#increaseTemp');
+    const decreaseTemp = document.querySelector('#decreaseTemp');
+    const tempIndicator = document.querySelector('#temperatureIndicator');
+    const infoContent = document.querySelector('#infoContent');
+
+    // Оновлення стану індикатора, кольору води та тексту
+    function updateState() {
+      const colorStops = [
+        { temp: 0, color: "#3498db" },  // Синій (холодно)
+        { temp: 50, color: "#f1c40f" }, // Жовтий (тепло)
+        { temp: 100, color: "#e74c3c" } // Червоний (гаряче)
+      ];
+
+      // Пошук відповідного кольору залежно від температури
+      let waterColor = colorStops[0].color;
+      for (let i = 0; i < colorStops.length - 1; i++) {
+        const start = colorStops[i];
+        const end = colorStops[i + 1];
+        if (heatLevel >= start.temp && heatLevel <= end.temp) {
+          const t = (heatLevel - start.temp) / (end.temp - start.temp);
+          waterColor = interpolateColor(start.color, end.color, t);
+          break;
+        }
+      }
+
+      // Оновлення кольору води
+      water.setAttribute('color', waterColor);
+
+      // Оновлення положення індикатора
+      const indicatorY = -1.5 + (heatLevel / maxHeatLevel) * 3; // Висота шкали: 3
+      tempIndicator.setAttribute('position', `0 ${indicatorY} 0.1`);
+
+      // Оновлення тексту в лівому куті
+      const infoMessage = heatLevel < 50 
+        ? "Вода холодна. Підігрівайте!" 
+        : heatLevel < 100 
+          ? "Вода тепла. Наближається кипіння." 
+          : "Вода кипить!";
+      infoContent.setAttribute('value', infoMessage);
+    }
+
+    // Функція для інтерполяції кольорів
+    function interpolateColor(color1, color2, factor) {
+      const hexToRgb = hex => hex.match(/.{1,2}/g).map(x => parseInt(x, 16));
+      const rgbToHex = rgb => rgb.map(x => x.toString(16).padStart(2, "0")).join("");
+
+      const rgb1 = hexToRgb(color1.slice(1));
+      const rgb2 = hexToRgb(color2.slice(1));
+      const rgb = rgb1.map((c, i) => Math.round(c + factor * (rgb2[i] - c)));
+      return `#${rgbToHex(rgb)}`;
+    }
+
+    // Обробка кнопок
+    increaseTemp.addEventListener('click', () => {
+      if (heatLevel < maxHeatLevel) {
+        heatLevel += 10;
+        updateState();
+      }
+    });
+
+    decreaseTemp.addEventListener('click', () => {
+      if (heatLevel > minHeatLevel) {
+        heatLevel -= 10;
+        updateState();
+      }
+    });
+
+    // Ініціалізація стану
+    updateState();
+  </script>
+</body>
+</html>
+
+
+
+
